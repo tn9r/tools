@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Encoder/Decoder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <a href="../index.html" class="back-link">← Back to Hub</a>
+        </nav>
+
+        <header>
+            <h1>Base64 <span class="highlight">Tool</span></h1>
+            <p>Encode or decode strings securely in your browser.</p>
+        </header>
+
+        <main class="tool-interface">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Input</h2>
+                    <div class="actions">
+                        <button id="btn-encode" class="btn primary">Encode to Base64</button>
+                        <button id="btn-decode" class="btn secondary">Decode from Base64</button>
+                    </div>
+                </div>
+                <textarea id="input-text" placeholder="Type or paste your text here..."></textarea>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Output</h2>
+                    <button id="btn-copy" class="btn icon-btn" title="Copy to clipboard">📋 Copy</button>
+                </div>
+                <textarea id="output-text" readonly placeholder="Result will appear here..."></textarea>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const inputText = document.getElementById('input-text');
+        const outputText = document.getElementById('output-text');
+        const btnEncode = document.getElementById('btn-encode');
+        const btnDecode = document.getElementById('btn-decode');
+        const btnCopy = document.getElementById('btn-copy');
+
+        btnEncode.addEventListener('click', () => {
+            try {
+                // btoa handles ASCII, for UTF-8 we need a helper
+                const text = inputText.value;
+                const encoded = btoa(unescape(encodeURIComponent(text)));
+                outputText.value = encoded;
+            } catch (e) {
+                outputText.value = "Error: Invalid input for encoding.";
+            }
+        });
+
+        btnDecode.addEventListener('click', () => {
+            try {
+                const text = inputText.value;
+                const decoded = decodeURIComponent(escape(atob(text)));
+                outputText.value = decoded;
+            } catch (e) {
+                outputText.value = "Error: Invalid Base64 string.";
+            }
+        });
+
+        btnCopy.addEventListener('click', () => {
+            if (outputText.value) {
+                navigator.clipboard.writeText(outputText.value).then(() => {
+                    const originalText = btnCopy.textContent;
+                    btnCopy.textContent = "✅ Copied!";
+                    setTimeout(() => btnCopy.textContent = originalText, 2000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
