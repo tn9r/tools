@@ -1,0 +1,118 @@
+---
+// uuid.astro
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .uuid-display {
+            font-family: monospace;
+            font-size: 1.5rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin: 2rem 0;
+            color: var(--text-primary);
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        .btn.primary {
+            background: var(--accent-color);
+            color: white;
+        }
+        .btn.primary:hover {
+            background: #2563eb;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+        .btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-elements">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <nav style="margin-bottom: 2rem;">
+            <a href="/" style="color: var(--text-secondary); text-decoration: none; font-weight: 500;">← Back to Hub</a>
+        </nav>
+
+        <header style="text-align: center;">
+            <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">UUID <span class="highlight">Generator</span></h1>
+            <p style="color: var(--text-secondary);">Generate secure version 4 universally unique identifiers (UUIDs).</p>
+        </header>
+
+        <main style="max-width: 600px; margin: 0 auto; background: var(--surface-color); backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem;">
+            <div class="uuid-display" id="uuid-text">Loading...</div>
+            <div class="controls">
+                <button id="btn-generate" class="btn primary">🔄 Generate New UUID</button>
+                <button id="btn-copy" class="btn secondary">📋 Copy to Clipboard</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const uuidText = document.getElementById('uuid-text');
+        const btnGenerate = document.getElementById('btn-generate');
+        const btnCopy = document.getElementById('btn-copy');
+
+        function generateUUID() {
+            // Use Crypto API if available (modern browsers)
+            if (crypto && crypto.randomUUID) {
+                return crypto.randomUUID();
+            }
+            // Fallback for older browsers
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function updateUUID() {
+            uuidText.textContent = generateUUID();
+        }
+
+        btnGenerate.addEventListener('click', updateUUID);
+
+        btnCopy.addEventListener('click', () => {
+            navigator.clipboard.writeText(uuidText.textContent).then(() => {
+                const originalText = btnCopy.textContent;
+                btnCopy.textContent = "✅ Copied!";
+                setTimeout(() => btnCopy.textContent = originalText, 2000);
+            });
+        });
+
+        // Initialize with a UUID
+        updateUUID();
+    </script>
+</body>
+</html>
