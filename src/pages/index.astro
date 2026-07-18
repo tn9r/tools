@@ -1,3 +1,7 @@
+---
+import packageJson from '../../package.json';
+const version = packageJson.version;
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +61,7 @@
         </main>
         
         <footer>
-            <p>&copy; 2026 Web Tools Hub. All operations run locally.</p>
+            <p>&copy; 2026 Web Tools Hub. All operations run locally. | v{version}</p>
         </footer>
     </div>
 </body>
