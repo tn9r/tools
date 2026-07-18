@@ -13,7 +13,7 @@
     "release": "release-it"
   },
   "dependencies": {
-    "astro": "^7.1.1",
+    "astro": "^5.0.0",
     "@astrojs/cloudflare": "^12.0.0"
   },
   "devDependencies": {
