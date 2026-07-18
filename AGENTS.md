@@ -48,3 +48,13 @@
 
 ### 本地测试：
 本地开发时，在项目根目录创建 `.env` 文件，加入 `API_KEY=你的密码` 即可供 Astro 本地 `npm run dev` 环境读取。
+
+---
+
+## 6. 项目结构与约定 (Structure & Conventions)
+- **目录结构**:
+  - `public/` — 静态资源与全局样式。`style.css` 定义全局设计令牌 (design tokens) 与布局；`base64-style.css` 提供工具页共用组件 (`.panel`、`.btn`、`.tool-interface` 等)。
+  - `src/pages/` — 每个 `.astro` 文件按文件名映射为一个路由；`src/pages/api/` 存放后端接口。
+- **文档单一来源**: `AGENTS.md` 是唯一权威文档，`CLAUDE.md` 是指向它的软链接 (symlink)。**只修改 `AGENTS.md`**，切勿把它改成普通文件造成内容重复。
+- **新增工具页规范**: 复制 `base64.astro` 的骨架 —— 顶部 `<nav>` 返回链接、纯文本 `<header>`、`<main class="tool-interface">` 包裹 `.panel` 卡片，操作按钮内嵌 `.panel-header`。并记得在 `index.astro` 的 `tools-grid` 中新增入口卡片。
+- **版本号同步**: `index.astro` 的页脚直接读取 `package.json` 的 `version` 字段，发布时请确保二者一致 (由 `release-it` 自动维护)。
