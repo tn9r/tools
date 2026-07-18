@@ -31,25 +31,20 @@
 
 ---
 
-## Development
+## 5. API Key 设置指南 (Cloudflare Pages)
 
-When starting the dev server, use background mode:
+当项目中存在需要鉴权的 API 时（如 `/api/ping`），你必须在 Cloudflare 后台配置 `API_KEY`，否则接口会处于开放状态（或者在强制鉴权模式下返回 401）。
 
-```
-astro dev --background
-```
+### 配置步骤：
+1. 登录 Cloudflare 控制台，进入 **Workers & Pages** -> 选择项目（`tools`）。
+2. 切换到 **Settings (设置)** 选项卡。
+3. 在左侧菜单点击 **Environment variables (环境变量)**。
+4. 点击 **Add variable (添加变量)**：
+   - 变量名: `API_KEY`
+   - 值: 自定义的安全密钥，例如 `my-super-secret-key-123`
+   - **强烈建议**: 点击旁边的 **Encrypt (小锁图标)**，将其加密为安全密钥，避免明文泄露。
+5. 点击 **Save** 保存。
+6. **关键步骤**: 环境变量修改后不会自动生效。你需要点击上方的 **Deployments (部署)**，找到最新的部署记录，点击最右侧的 `...` 按钮并选择 **Retry deployment (重试部署)**。等重新构建完毕后，保护机制才会真正激活。
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
-
-## Documentation
-
-Full documentation: https://docs.astro.build
-
-Consult these guides before working on related tasks:
-
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+### 本地测试：
+本地开发时，在项目根目录创建 `.env` 文件，加入 `API_KEY=你的密码` 即可供 Astro 本地 `npm run dev` 环境读取。
