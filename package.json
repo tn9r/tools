@@ -18,5 +18,10 @@
   },
   "devDependencies": {
     "release-it": "^17.6.0"
+  },
+  "release-it": {
+    "npm": {
+      "publish": false
+    }
   }
 }
