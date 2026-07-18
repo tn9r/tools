@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/base64-style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <style>
+    <style is:global>
         /* Alias local names to the global design tokens in style.css */
         :root {
             --accent: var(--accent-color);
@@ -226,7 +226,7 @@
         <div class="glow-orb orb-2"></div>
     </div>
 
-    <div class="container" style="max-width: 1400px;">
+    <div class="container">
         <nav>
             <a href="/" class="back-link">← Back to Hub</a>
         </nav>
@@ -354,7 +354,9 @@
             }
         }
 
-        btnOpen.addEventListener('click', openFilePicker);
+        // Stop the button click from bubbling to the dropzone, which would
+        // otherwise open a second file picker in the same gesture and abort.
+        btnOpen.addEventListener('click', (e) => { e.stopPropagation(); openFilePicker(); });
         btnLoad.addEventListener('click', openFilePicker);
         dropzone.addEventListener('click', openFilePicker);
 
