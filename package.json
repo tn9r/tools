@@ -1,7 +1,7 @@
 {
   "name": "tools-astro",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "engines": {
     "node": ">=24.0.0"
   },

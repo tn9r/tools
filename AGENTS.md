@@ -20,7 +20,7 @@
 ## 3. 版本发布管理 (Release & Versioning)
 - 项目未发布到 NPM 官方仓库，而是作为一个私有 Web 项目存在。
 - 版本号管理和 Tag 生成统一使用 `release-it` 工具。
-- **执行规范**: 必须使用 `npx release-it patch --ci --no-npm` 来绕过 NPM 的发布检查，专门利用其修改 `package.json` 版本并自动推送 Git Tag 到 GitHub。
+- **执行规范**: 必须使用 `npx release-it patch --ci --npm.publish=false` 来绕过 NPM 的发布检查，专门利用其修改 `package.json` 版本并自动推送 Git Tag 到 GitHub。
 
 ## 4. API 接口开发规范 (API Routes)
 - **路由位置**: 后端接口统一存放在 `src/pages/api/` 目录下（如 `ping.ts`）。
