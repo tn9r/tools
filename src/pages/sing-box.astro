@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proxy Config Studio (Sing-box & Clash)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/base64-style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
@@ -334,42 +336,46 @@
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
     </div>
-    <div class="app-container" style="display: flex; flex-direction: column; height: 100vh; max-width: 1400px; margin: 0 auto; padding: 2rem;">
-        <nav style="margin-bottom: 2rem;">
-            <a href="/" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 1rem; transition: color 0.2s;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-muted)'">← Back to Hub</a>
+    <div class="container" style="max-width: 1600px;">
+        <nav>
+            <a href="/" class="back-link">← Back to Hub</a>
         </nav>
         
-        <header style="text-align: center; margin-bottom: 2rem;">
-            <h1 style="font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.05em;">Proxy Config <span class="highlight" style="color: #3b82f6; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Studio</span></h1>
-            <p style="color: var(--text-muted); font-size: 1.2rem;">支持 Sing-box (JSON) 和 Clash (YAML) 配置文件的可视化管理。</p>
+        <header>
+            <h1>Proxy Config <span class="highlight">Studio</span></h1>
+            <p>支持 Sing-box (JSON) 和 Clash (YAML) 配置文件的可视化管理。</p>
         </header>
 
-        <main style="flex: 1; display: flex; flex-direction: column; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; position: relative;">
+        <main class="tool-interface" style="flex-direction: row; align-items: stretch; height: 75vh; min-height: 600px; position: relative;">
             
-            <div class="toolbar" style="display: flex; padding: 1rem 2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.2); justify-content: space-between; align-items: center; z-index: 10;">
-                <div>
-                    <button class="btn" id="btn-open-dir" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1);">📂 打开本地文件夹</button>
-                    <input type="file" id="fallback-file-input" accept=".json,.yaml,.yml" style="display: none;" />
-                    <button class="btn" id="btn-fallback-open" style="display: none; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1);">📂 打开配置文件</button>
+            <!-- Sidebar Panel -->
+            <div class="panel" style="width: 300px; padding: 1.5rem 1rem; overflow: hidden;">
+                <div class="panel-header" style="margin-bottom: 1rem; padding: 0 0.5rem;">
+                    <h2 style="font-size: 1.1rem;">Files</h2>
+                    <div class="actions">
+                        <button id="btn-open-dir" class="btn icon-btn" title="Open Folder">📂 Open</button>
+                        <input type="file" id="fallback-file-input" accept=".json,.yaml,.yml" style="display: none;" />
+                        <button id="btn-fallback-open" class="btn icon-btn" style="display: none;" title="Open File">📂 Open</button>
+                    </div>
                 </div>
-                <div>
-                    <button class="btn btn-warning" id="btn-save-as" style="display: none;">💾 另存为...</button>
-                    <button class="btn btn-success" id="btn-save" style="display: none;">💾 保存文件</button>
-                </div>
+                <ul class="file-list" id="file-list" style="overflow-y: auto; flex: 1; padding: 0 0.5rem;"></ul>
             </div>
 
-            <div style="display: flex; flex: 1; overflow: hidden;">
-                <div class="sidebar" id="sidebar">
-            <ul class="file-list" id="file-list"></ul>
-        </div>
+            <!-- Workspace Panel -->
+            <div class="panel" style="flex: 1; overflow: hidden; padding: 0; display: flex; flex-direction: column;">
+                <div class="panel-header" style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.2);">
+                    <div class="tabs" style="display: flex; gap: 1rem;">
+                        <div class="tab active" data-target="tab-visual" style="font-size: 1.1rem; font-weight: 600; cursor: pointer;">✨ Visual Config</div>
+                        <div class="tab" data-target="tab-code" style="font-size: 1.1rem; font-weight: 600; cursor: pointer;">💻 Source Code</div>
+                    </div>
+                    <div class="actions">
+                        <button id="btn-save-as" class="btn secondary" style="display: none;">Save As...</button>
+                        <button id="btn-save" class="btn primary" style="display: none;">Save Config</button>
+                    </div>
+                </div>
 
-        <div class="workspace" id="workspace" style="display: none;">
-            <div class="tabs">
-                <div class="tab active" data-target="tab-visual">✨ 全局可视化配置</div>
-                <div class="tab" data-target="tab-code">💻 源代码编辑</div>
-            </div>
-
-            <div class="tab-content active" id="tab-visual">
+                <div class="workspace-content" id="workspace" style="display: none; flex: 1; overflow: hidden;">
+                    <div class="tab-content active" id="tab-visual" style="height: 100%; overflow-y: auto; padding: 2rem;">
                 <!-- SINGBOX CONTAINERS -->
                 <div id="singbox-sections">
                     <details>
@@ -419,16 +425,18 @@
 
             </div>
 
-            <div class="tab-content" id="tab-code" style="padding: 0;">
-                <textarea id="code-editor"></textarea>
-            </div>
-        </div>
-        </div>
+                    </div>
+                    <div class="tab-content" id="tab-code" style="padding: 0; height: 100%;">
+                        <textarea id="code-editor" style="width: 100%; height: 100%; background: #1e1e1e; border: none; border-radius: 0;"></textarea>
+                    </div>
+                </div>
 
-        <div id="welcome-screen">
-            <h2 style="font-size: 1.5rem; color: var(--text-muted); margin-bottom: 1.5rem;">请在上方选择文件夹或文件以开始配置</h2>
-            <button class="btn" id="btn-main-action" style="padding: 1rem 2rem; font-size: 1.1rem; background: transparent; border: 2px dashed var(--border-color); color: var(--text-muted);">点击或拖拽文件到此处打开</button>
-        </div>
+                <!-- Welcome Screen Overlay inside the workspace panel -->
+                <div id="welcome-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--surface-color); z-index: 5;">
+                    <h2 style="font-size: 1.5rem; color: var(--text-muted); margin-bottom: 1.5rem;">请在左侧选择文件夹或文件以开始配置</h2>
+                    <button class="btn secondary" id="btn-main-action">点击或拖拽文件到此处打开</button>
+                </div>
+            </div>
         </main>
     </div>
 
