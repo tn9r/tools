@@ -236,7 +236,7 @@
 
         #welcome-screen {
             position: absolute;
-            top: 0;
+            top: 60px; /* Leave space for toolbar */
             left: 0;
             right: 0;
             bottom: 0;
@@ -339,20 +339,27 @@
             <a href="/" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 1rem; transition: color 0.2s;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-muted)'">← Back to Hub</a>
         </nav>
         
-        <header style="text-align: center; margin-bottom: 2rem; background: transparent; border: none; padding: 0;">
-            <h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Proxy Config Studio</h1>
-            <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem;">支持 Sing-box (JSON) 和 Clash (YAML) 配置文件的可视化管理。</p>
-            <div style="display: flex; justify-content: center; gap: 1rem;">
-                <button class="btn" id="btn-open-dir" style="padding: 0.8rem 1.5rem; font-size: 1rem;">📂 打开本地文件夹</button>
-                <input type="file" id="fallback-file-input" accept=".json,.yaml,.yml" />
-                <button class="btn" id="btn-fallback-open" style="display: none; background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.8rem 1.5rem; font-size: 1rem;">📂 打开配置文件</button>
-                <button class="btn btn-warning" id="btn-save-as" style="display: none; padding: 0.8rem 1.5rem; font-size: 1rem;">💾 另存为...</button>
-                <button class="btn btn-success" id="btn-save" style="display: none; padding: 0.8rem 1.5rem; font-size: 1rem;">💾 保存文件</button>
-            </div>
+        <header style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.05em;">Proxy Config <span class="highlight" style="color: #3b82f6; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Studio</span></h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">支持 Sing-box (JSON) 和 Clash (YAML) 配置文件的可视化管理。</p>
         </header>
 
-        <main style="flex: 1; display: flex; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; position: relative;">
-            <div class="sidebar" id="sidebar">
+        <main style="flex: 1; display: flex; flex-direction: column; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; overflow: hidden; position: relative;">
+            
+            <div class="toolbar" style="display: flex; padding: 1rem 2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.2); justify-content: space-between; align-items: center; z-index: 10;">
+                <div>
+                    <button class="btn" id="btn-open-dir" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1);">📂 打开本地文件夹</button>
+                    <input type="file" id="fallback-file-input" accept=".json,.yaml,.yml" style="display: none;" />
+                    <button class="btn" id="btn-fallback-open" style="display: none; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1);">📂 打开配置文件</button>
+                </div>
+                <div>
+                    <button class="btn btn-warning" id="btn-save-as" style="display: none;">💾 另存为...</button>
+                    <button class="btn btn-success" id="btn-save" style="display: none;">💾 保存文件</button>
+                </div>
+            </div>
+
+            <div style="display: flex; flex: 1; overflow: hidden;">
+                <div class="sidebar" id="sidebar">
             <ul class="file-list" id="file-list"></ul>
         </div>
 
@@ -415,6 +422,7 @@
             <div class="tab-content" id="tab-code" style="padding: 0;">
                 <textarea id="code-editor"></textarea>
             </div>
+        </div>
         </div>
 
         <div id="welcome-screen">
